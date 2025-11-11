@@ -1,3 +1,16 @@
+import sys
+import os
+
+# 将 lib 目录添加到 sys.path
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'lib'))
+sys.path.insert(0, lib_path)
+
+# 将 requests 和 chardet 的源代码目录也添加到 sys.path
+requests_path = os.path.join(lib_path, 'requests')
+chardet_path = os.path.join(lib_path, 'chardet')
+sys.path.insert(0, requests_path)
+sys.path.insert(0, chardet_path)
+
 import http.server
 import socketserver
 import json
@@ -148,12 +161,7 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
 
 PORT = 5002
 
-# 检查并提示安装requests库
-try:
-    import requests
-except ImportError:
-    print("错误: 'requests' 库未安装。请运行 'pip install requests' 来安装。")
-    exit(1)
+
 
 with socketserver.TCPServer(("", PORT), APIHandler) as httpd:
     print(f"Serving real-data analysis server at port {PORT}")
